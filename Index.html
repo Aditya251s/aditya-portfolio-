@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aditya | Designer</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fdfaf5;--text:#0f0f10;--muted:#80808a;--border:#f1e9de}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;overflow-x:hidden;user-select:none}
+input,select,textarea{user-select:text!important;-webkit-user-select:text!important}
+h1,h2{font-family:'Syne',sans-serif}
+canvas#motion{position:fixed;inset:0;z-index:-1}
+nav{position:fixed;top:0;left:0;width:100%;padding:14px 4%;display:flex;justify-content:space-between;align-items:center;z-index:100;background:rgba(253,250,245,.94);backdrop-filter:blur(24px);border-bottom:1px solid var(--border)}
+.brand{cursor:pointer}.brand b{font-size:33px;font-weight:800}.brand i{font-size:10px;letter-spacing:6px;color:#6d28d9;font-style:normal;font-weight:700;display:block}
+.btn{padding:11px 22px;border-radius:100px;border:none;cursor:pointer;font-weight:700;transition:.4s;font-size:14px}
+.btn-dark{background:var(--text);color:#fff}.btn-light{background:#fff;border:1.5px solid var(--border)}
+.btn-sec{width:100%;margin-top:16px;padding:12px;font-size:13px;font-weight:800;display:flex;justify-content:center;background:var(--text);color:#fff;border-radius:100px}
+.hero{min-height:100vh;padding:110px 4% 60px;display:grid;grid-template-columns:1.15fr 0.65fr;gap:24px;align-items:center;position:relative;z-index:2;background:linear-gradient(135deg,#1e1b2e 0%,#25213e 30%,#2d2640 60%,#1a1a2e 100%);border-radius:0 0 40px 40px}
+.hero h1{font-size:clamp(32px,5.5vw,88px);line-height:.88;letter-spacing:-3px;color:#f8f6ff}
+.hero h1 span{background:linear-gradient(135deg,#a78bfa,#ff5a8a);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{color:#b8b5c8;font-size:18px;margin:18px 0 28px;max-width:560px;line-height:1.6}
+.motion-card{background:#fff;border:2px solid var(--border);border-radius:18px;padding:10px;box-shadow:0 20px 50px rgba(0,0,0,.3);max-width:204px;justify-self:center;transform:translateX(10%) translateY(calc(-40px - 5% - 10%))}
+.view{height:93px;border-radius:14px;display:grid;place-items:center;font-weight:800;font-size:20px;position:relative;overflow:hidden}
+.section{padding:60px 4%;position:relative;z-index:2}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:22px}
+@keyframes floatSec{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes blinkSec{0%{border-color:#6d28d9;box-shadow:0 8px 25px rgba(109,40,217,0.15)}25%{border-color:#ff2e63;box-shadow:0 12px 30px rgba(255,46,99,0.2)}50%{border-color:#f59e0b;box-shadow:0 12px 30px rgba(245,158,11,0.2)}75%{border-color:#059669;box-shadow:0 12px 30px rgba(5,150,105,0.2)}100%{border-color:#2563eb;box-shadow:0 8px 25px rgba(37,99,235,0.15)}}
+.cat{background:#fff;border:2px solid var(--border);border-radius:28px;padding:24px;cursor:pointer;transition:.5s;position:relative;padding-bottom:85px;animation: floatSec 4s ease-in-out infinite, blinkSec 3s linear infinite;}
+.cat-top{display:flex;justify-content:space-between;align-items:center}.cat-ic{width:60px;height:60px;border-radius:18px;background:var(--light);display:grid;place-items:center;font-size:28px;border:1.5px solid var(--border);overflow:hidden}
+.cat-ic img{width:100%;height:100%;object-fit:contain;padding:4px}
+.cat h3{font-size:22px;margin-top:16px;word-break:break-word}
+.count{padding:6px 12px;border-radius:100px;font-size:11px;font-weight:800;background:var(--text);color:#fff}
+.admin-actions{display:none!important;position:absolute;bottom:14px;left:14px;right:14px;gap:8px;z-index:50}
+.admin-mode.admin-actions{display:flex!important}
+.modal{position:fixed;inset:0;background:rgba(253,250,245,.98);backdrop-filter:blur(26px);z-index:300;display:none;padding:20px 4%;overflow:auto}
+.modal.show{display:block}
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px;margin-top:24px}
+@keyframes floatFile{0%,100%{transform:translateY(0px)}50%{transform:translateY(-10px)}}
+@keyframes blinkColor{0%{border-color:#6d28d9}25%{border-color:#ff2e63}50%{border-color:#f59e0b}75%{border-color:#059669}100%{border-color:#2563eb}}
+.item{background:#fff;border:2px solid var(--border);border-radius:22px;overflow:hidden;position:relative;animation: floatFile 3s ease-in-out infinite, blinkColor 2s linear infinite;}
+.item img{width:100%;height:220px;object-fit:cover;display:block}
+.item-info{padding:14px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.move-btns{display:none;gap:4px;position:absolute;bottom:10px;left:10px;z-index:6}
+.admin-mode.move-btns{display:flex}
+.delWork{display:none!important;position:absolute;top:10px;right:10px;background:#e11d48;color:#fff;border:none;padding:8px 14px;border-radius:100px;font-size:11px;font-weight:800;z-index:5;cursor:pointer}
+.editPrice{display:none!important;position:absolute;top:10px;left:10px;background:#fff;color:#6d28d9;border:1.5px solid #ddd6fe;padding:8px 14px;border-radius:100px;font-size:11px;font-weight:800;z-index:5;cursor:pointer}
+.admin-mode.delWork,.admin-mode.editPrice{display:block!important}
+.adminBox{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:92%;max-width:500px;max-height:92vh;overflow:auto;background:#fff;border:2px solid var(--border);border-radius:24px;padding:24px;box-shadow:0 40px 100px rgba(0,0,0,.3);z-index:600;display:none}
+.adminBox.show{display:block}
+.adminBox input,.adminBox select{width:100%;padding:13px;margin:7px 0 14px;background:#faf7f3;border:1.5px solid var(--border);border-radius:12px;font-size:14px}
+.all-works{max-height:220px;overflow:auto;border:1px solid var(--border);border-radius:12px;padding:8px;margin-bottom:14px;background:#fffefb}
+footer{position:relative;z-index:2;margin-top:40px;padding:60px 4% 30px;background:#101012;color:#fff;border-radius:40px 40px 0 0;text-align:center}
+.tag{position:fixed;bottom:16px;right:4%;background:var(--text);color:#fff;padding:10px 18px;border-radius:100px;font-size:11px;font-weight:800;z-index:5;pointer-events:none}
+#addBtn{display:none!important}.admin-mode #addBtn{display:inline-flex!important}
+.emoji-box{display:flex;align-items:center;gap:10px;margin:6px 0 10px;background:#f5f3ff;border:1.5px dashed #ddd6fe;padding:10px 12px;border-radius:12px}
+#loginStar{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);font-size:90px;z-index:700;pointer-events:none;opacity:0;transition:.5s cubic-bezier(.175,.885,.32,1.275)}
+#loginStar.showStar{transform:translate(-50%,-160px) scale(1) rotate(360deg);opacity:1}
+.delSec{display:none!important;position:absolute;bottom:14px;right:14px;left:14px;background:#fff;border:1.5px solid #fecaca;color:#e11d48;padding:10px;border-radius:100px;font-size:11px;font-weight:800;cursor:pointer;z-index:60;transition:.3s}
+.delSec:hover{background:#e11d48;color:#fff}
+.admin-mode.delSec{display:block!important}
+</style>
+</head>
+<body>
+<canvas id="motion"></canvas>
+<div class="tag" id="motionTag">💼 BUSINESS CARDS</div>
+<div id="loginStar">⭐</div>
+<nav>
+<div class="brand" id="brandSecret"><b>Aditya</b><i>Designer</i></div>
+<div style="display:flex;gap:8px">
+<button class="btn btn-light" onclick="document.getElementById('work').scrollIntoView({behavior:'smooth'})">Work</button>
+<button class="btn btn-dark" id="addBtn" onclick="window._aS()">+ Add Section</button>
+</div>
+</nav>
+<section class="hero">
+<div>
+<h1>Designs That<br><span>Convert,</span><br>Not Just Look Good.</h1>
+<p>Premium designs that help your business grow faster. Starting from just ₹99.</p>
+<div style="display:flex;gap:10px;flex-wrap:wrap">
+<button class="btn btn-dark" onclick="document.getElementById('work').scrollIntoView({behavior:'smooth'})">View Work →</button>
+<button class="btn btn-light">Starts ₹99</button>
+</div>
+</div>
+<div class="motion-card"><div id="motionView" class="view" style="background:linear-gradient(135deg,#ede9fe,#ddd6fe);color:#6d28d9"></div></div>
+</section>
+<section class="section" id="work">
+<div style="margin-bottom:30px"><h2 style="font-size:clamp(28px,5vw,48px);letter-spacing:-2px">Beautiful Bold Work</h2><p style="color:var(--muted);font-size:14px">5 fast clicks on Aditya logo for admin</p></div>
+<div class="grid" id="catGrid"></div>
+</section>
+<div class="modal" id="galModal">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
+<h2 id="galTitle" style="font-size:40px"></h2>
+<div style="display:flex;gap:8px">
+<button class="btn btn-dark delSec" id="galDelBtn" style="display:none;position:static" onclick="window._dSecByName()">🗑 Delete Section</button>
+<button class="btn btn-light" onclick="window._cG()">✕ Close</button>
+</div>
+</div>
+<div class="gallery" id="gallery"></div>
+</div>
+<div class="adminBox" id="loginBox"><h3>⭐ Owner Login</h3><input type="password" id="passIn" placeholder="•••• ••••"><button class="btn btn-dark" style="width:100%" onclick="window._dL()">Unlock ⭐</button></div>
+<div class="adminBox" id="upBox">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+<h3>Admin - <span id="totalCount">Loading...</span></h3>
+<div style="display:flex;gap:8px">
+<button class="btn btn-light" onclick="window._bA()">← Back</button>
+<button class="btn btn-light" onclick="window._lO()">← Lock</button>
+</div>
+</div>
+<div id="allWorksList" class="all-works"></div>
+<input type="file" id="fileIn" accept="image/*"><input type="text" id="titleIn" placeholder="Design Title"><select id="catIn"></select><input type="number" id="priceIn" placeholder="Price ₹">
+<button class="btn btn-dark" style="width:100%" id="pubBtn" onclick="window._pB()">Publish</button>
+</div>
+<div class="adminBox" id="secBox">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+<h3>✏️ Add / Rename Section</h3>
+<button class="btn btn-light" onclick="window._bS()">← Back</button>
+</div>
+<input type="text" id="secName" placeholder="e.g. Wedding Invitation Cards" oninput="window._sE()">
+<div class="emoji-box"><span id="emojiPreview">✨</span><span id="emojiReason">type name - icon auto-creates</span></div>
+<input type="text" id="secEmoji" placeholder="✨ (auto)">
+<input type="text" id="secDesc" placeholder="Premium collection"><input type="color" id="secColor" value="#6d28d9">
+<button class="btn btn-dark" style="width:100%;margin-top:10px" onclick="window._sS()">Save Section</button>
+</div>
+<div class="adminBox" id="editWorkBox">
+<h3>✏️ Edit Work</h3><input type="text" id="editTitle"><select id="editCat"></select><input type="number" id="editPriceIn">
+<button class="btn btn-dark" style="width:100%" onclick="window._sW()">Save</button>
+</div>
+<footer><h2 style="font-size:44px">Let's Create Something Premium</h2><p style="margin-top:24px;color:#5a5a64;font-size:10px">© 2026 ADITYA • Designer</p></footer>
+<script>
+const CUSTOM_FLYER_ICON = "flyer_final_icon.png";
+const _0xPEPPER="Aditya_Designer_2026_Secure_Star_!@#";const _0xSALT="a7d9x2_k4";const _0xLOCK_KEY="aditya_lock_v4";const _0xTOKEN_KEY="aditya_token_v4";const _0xOWNER_DEVICE_KEY="aditya_owner_device_v4";
+let _0xCACHE_HASH=null;async function _0xhash(s){const enc=new TextEncoder();let data=enc.encode(_0xSALT+s+_0xPEPPER);let h=await crypto.subtle.digest('SHA-256',data);let h2=await crypto.subtle.digest('SHA-256',h);return [...new Uint8Array(h2)].map(x=>x.toString(16).padStart(2,'0')).join('');}
+(async()=>{_0xCACHE_HASH=await _0xhash("71234");})();
+function _isOwnerDevice(){try{return localStorage.getItem(_0xOWNER_DEVICE_KEY)==="OWNER_ADITYA_VERIFIED_71234";}catch(e){return false}}
+function _isLocked(){try{if(_isOwnerDevice())return{locked:false};let d=JSON.parse(localStorage.getItem(_0xLOCK_KEY)||'null');if(!d)return{locked:false,count:0};if(d.count>=2){if(Date.now()-d.time<10*60*1000){return{locked:true,remain:Math.ceil((10*60*1000-(Date.now()-d.time))/1000)};}else{localStorage.removeItem(_0xLOCK_KEY);return{locked:false,count:0};}}return{locked:false,count:d.count};}catch(e){return{locked:false}}}
+function _addFail(){if(_isOwnerDevice())return;let d=JSON.parse(localStorage.getItem(_0xLOCK_KEY)||'{"count":0,"time":0}');d.count=(d.count||0)+1;d.time=Date.now();localStorage.setItem(_0xLOCK_KEY,JSON.stringify(d));}
+function _markAsOwnerDevice(){localStorage.setItem(_0xOWNER_DEVICE_KEY,"OWNER_ADITYA_VERIFIED_71234");localStorage.removeItem(_0xLOCK_KEY);}
+function escapeHTML(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+const STORAGE_KEY_CATS="aditya_cats_v4";const STORAGE_KEY_INTR="aditya_intr_v4";
+let categories=JSON.parse(localStorage.getItem(STORAGE_KEY_CATS)||'null')||[
+{name:"Youtube Thumbnails",icon:"🎬",desc:"High CTR Thumbnails",hoverCol:"#f59e0b",light:"#fef3c7"},
+{name:"Business Cards",icon:"💼",desc:"Premium Business Cards",hoverCol:"#6d28d9",light:"#ede9fe"},
+{name:"Visiting Cards",icon:"📇",desc:"Visiting Cards",hoverCol:"#059669",light:"#d1fae5"},
+{name:"Posters",icon:"🖼️",desc:"Posters",hoverCol:"#ff2e63",light:"#ffe4e6"},
+{name:"Pamplets",icon:"📄",desc:"Pamplets",hoverCol:"#2563eb",light:"#dbeafe"},
+{name:"Flyers",icon:"📑",desc:"Flyer Pages",hoverCol:"#e11d48",light:"#ffe4e6",customIcon:CUSTOM_FLYER_ICON},
+{name:"Logos",icon:"🎨",desc:"Creative Logos",hoverCol:"#7c3aed",light:"#fce7f3"},
+{name:"Wedding Invitation Cards",icon:"💌",desc:"Premium Wedding Invitations",hoverCol:"#e11d48",light:"#ffe4e6"}
+];
+let designs=[];let intruders=JSON.parse(localStorage.getItem(STORAGE_KEY_INTR)||'[]');
+function getEmojiForName(n){
+  n=(n||'').toLowerCase();
+  if(n.includes("youtube")||n.includes("thumb"))return{emoji:"🎬",reason:"Youtube"};
+  if(n.includes("business"))return{emoji:"💼",reason:"Business"};
+  if(n.includes("visiting"))return{emoji:"📇",reason:"Visiting"};
+  if(n.includes("poster"))return{emoji:"🖼️",reason:"Poster"};
+  if(n.includes("pamplet")||n.includes("brochure"))return{emoji:"📄",reason:"Pamplet"};
+  if(n.includes("flyer"))return{emoji:"📑",reason:"Flyer"};
+  if(n.includes("logo"))return{emoji:"🎨",reason:"Logo"};
+  if(n.includes("wedding"))return{emoji:"💌",reason:"Wedding"};
+  if(n.includes("invite")||n.includes("card"))return{emoji:"💌",reason:"Invitation"};
+  if(n.includes("menu"))return{emoji:"🍽️",reason:"Menu"};
+  if(n.includes("banner"))return{emoji:"🏳️",reason:"Banner"};
+  return{emoji:"✨",reason:"Premium"};
+}
+function createAutoIcon(name, color, emoji){
+  try{
+    let c=document.createElement('canvas');
+    c.width=160; c.height=160;
+    let x=c.getContext('2d');
+    x.fillStyle=color;
+    x.fillRect(0,0,160,160);
+    x.fillStyle='#ffffff';
+    x.beginPath();
+    x.roundRect(12,12,136,136,28);
+    x.fill();
+    x.font='bold 64px sans-serif';
+    x.textAlign='center';
+    x.textBaseline='middle';
+    x.fillText(emoji,80,70);
+    x.font='800 11px Syne, sans-serif';
+    x.fillStyle=color;
+    x.fillText((name||'PREMIUM').toUpperCase().slice(0,14),80,118);
+    return c.toDataURL('image/png');
+  }catch(e){ return null; }
+}
+window._sE=function(){
+  let name=document.getElementById('secName').value.trim();
+  let info=getEmojiForName(name||'premium');
+  document.getElementById('emojiPreview').innerText=info.emoji;
+  document.getElementById('emojiReason').innerText=info.reason+' - Auto icon will be created';
+  if(!document.getElementById('secEmoji').value.trim()){
+    document.getElementById('secEmoji').value=info.emoji;
+  }
+};
+const DB_NAME="AdityaUnlimitedDB";const STORE_NAME="designs";
+function openDB(){return new Promise((res,rej)=>{let r=indexedDB.open(DB_NAME,1);r.onupgradeneeded=e=>{let db=e.target.result;if(!db.objectStoreNames.contains(STORE_NAME))db.createObjectStore(STORE_NAME,{keyPath:"id"});};r.onsuccess=e=>res(e.target.result);r.onerror=e=>rej(e);});}
+async function loadDesigns(){try{let db=await openDB();let data=await new Promise((resolve)=>{let tx=db.transaction(STORE_NAME,"readonly");let store=tx.objectStore(STORE_NAME);let req=store.getAll();req.onsuccess=()=>resolve(req.result||[]);req.onerror=()=>resolve([]);});return data;}catch(e){return [];}}
+async function saveAllToDB(all){let db=await openDB();return new Promise((resolve,reject)=>{let tx=db.transaction(STORE_NAME,"readwrite");let store=tx.objectStore(STORE_NAME);store.clear();tx.oncomplete=()=>{let tx2=db.transaction(STORE_NAME,"readwrite");let store2=tx2.objectStore(STORE_NAME);all.forEach(d=>store2.put(d));tx2.oncomplete=()=>resolve(true);tx2.onerror=()=>reject(false);};tx.onerror=()=>reject(false);});}
+async function save(){try{localStorage.setItem(STORAGE_KEY_CATS,JSON.stringify(categories));localStorage.setItem(STORAGE_KEY_INTR,JSON.stringify(intruders));await saveAllToDB(designs);return true;}catch(e){return false;}}
+;(async()=>{designs=await loadDesigns();renderCats();})();
+function renderCats(){
+  document.getElementById('catGrid').innerHTML=categories.map((c,i)=>{
+    let iconHTML;
+    if(c.customIcon){
+      iconHTML = `<img src="${escapeHTML(c.customIcon)}" alt="${escapeHTML(c.name)}" onerror="this.parentElement.innerHTML='${escapeHTML(c.icon||'✨')}'">`;
+    } else {
+      iconHTML = escapeHTML(c.icon || '✨');
+    }
+    return `<div class="cat" data-cat-idx="${i}" style="--hoverCol:${escapeHTML(c.hoverCol)};--light:${escapeHTML(c.light)}"><div class="cat-top"><div class="cat-ic" style="background:${escapeHTML(c.light)}">${iconHTML}</div><div class="count">${designs.filter(d=>d.cat===c.name).length} items</div></div><h3>${escapeHTML(c.name)}</h3><p style="color:var(--muted);font-size:12px;margin-top:6px">${escapeHTML(c.desc)}</p><button class="btn btn-sec view-btn">View ${escapeHTML(c.name)} →</button><button class="delSec" onclick="event.stopPropagation();window._dSec(${i})">🗑 Delete ${escapeHTML(c.name)}</button></div>`;
+  }).join('');
+  document.querySelectorAll('.cat').forEach((el)=>{const idx=parseInt(el.getAttribute('data-cat-idx'));const catName=categories[idx].name;el.querySelector('.view-btn').addEventListener('click',(e)=>{e.stopPropagation();window._oG(catName);});el.addEventListener('click',()=>window._oG(catName));});
+  let opts=categories.map(c=>`<option value="${escapeHTML(c.name)}">${escapeHTML(c.name)}</option>`).join('');document.getElementById('catIn').innerHTML=opts;document.getElementById('editCat').innerHTML=opts;
+  document.getElementById('totalCount').innerText = designs.length + ' Works • ' + categories.length + ' Sections';
+  document.getElementById('allWorksList').innerHTML = designs.length? designs.map(d=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f1e9de;font-size:12px"><b>${escapeHTML(d.title)}</b><span>${escapeHTML(d.cat)} • ₹${escapeHTML(String(d.price))}</span></div>`).join('') : 'No works yet';
+}
+function getRealIconHTML(type, color){
+  type=type.toLowerCase();
+  if(type.includes('flyer')){
+    return `<div style="display:flex;flex-direction:column;align-items:center;gap:5px"><div style="width:60px;height:70px;background:#fff;border-radius:8px;box-shadow:0 6px 15px rgba(0,0,0,0.12);padding:4px"><img src="${CUSTOM_FLYER_ICON}" style="width:100%;height:100%;object-fit:contain;" onerror="this.replaceWith(document.createTextNode('📑'))"></div><div style="font-size:8px;font-weight:800">FLYER DESIGN</div></div>`;
+  }
+  if(type.includes('business')) return `<div style="width:70px;height:48px;background:#fff;border-radius:8px;display:flex;flex-direction:column;padding:6px;gap:3px;font-size:8px;font-weight:800;box-shadow:0 4px 10px rgba(0,0,0,.1)"><span style="height:4px;background:${color};border-radius:10px"></span>BUSINESS CARD</div>`;
+  if(type.includes('logo')) return `<div style="width:44px;height:44px;background:#fff;border:2px solid ${color};border-radius:12px;display:grid;place-items:center">🎨</div>`;
+  return `<div>${type.toUpperCase().slice(0,12)}</div>`;
+}
+const cv=document.getElementById('motion'),cx=cv.getContext('2d'),tag=document.getElementById('motionTag');
+function rs(){cv.width=innerWidth;cv.height=innerHeight}rs();addEventListener('resize',rs);
+let fallingCards=[];const colors=["#4c1d95","#7c2d12","#065f46","#1e3a8a"];const cardTexts=["ADITYA DESIGNER","PREMIUM CARD","YOUR LOGO"];
+function initCards(){fallingCards=[];for(let i=0;i<18;i++){fallingCards.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,w:130,h:80,speed:0.5+Math.random(),rot:Math.random()*360,rotSpeed:(Math.random()-0.5),color:colors[i%colors.length],text:cardTexts[i%3],opacity:0.4,depth:8});}}
+initCards();
+const seq=[{label:"💼 BUSINESS CARD",color:"#6d28d9",bg:"linear-gradient(135deg,#ede9fe,#ddd6fe)"},{label:"🎨 LOGO DESIGN",color:"#ff2e63",bg:"linear-gradient(135deg,#ffe4e6,#fecdd3)"},{label:"📑 FLYER DESIGN",color:"#e11d48",bg:"linear-gradient(135deg,#ffe4e6,#fecdd3)"},{label:"📄 PAMPLET DESIGN",color:"#2563eb",bg:"linear-gradient(135deg,#dbeafe,#bfdbfe)"}];
+let idx=0,timer=0,t=0;
+function updateLandingRealIcon(i){let s=seq[i];document.getElementById('motionView').style.background=s.bg;document.getElementById('motionView').innerHTML=getRealIconHTML(s.label,s.color);}
+(function loop(){cx.clearRect(0,0,cv.width,cv.height);fallingCards.forEach(card=>{cx.save();cx.translate(card.x,card.y);cx.rotate(card.rot*Math.PI/180);cx.globalAlpha=card.opacity;cx.fillStyle=card.color;cx.fillRect(-card.w/2,-card.h/2,card.w,card.h);cx.fillStyle="#fff";cx.font="bold 8px sans-serif";cx.fillText(card.text,-card.w/2+8,-card.h/2+14);cx.restore();card.y+=card.speed;card.rot+=card.rotSpeed;if(card.y>innerHeight+100){card.y=-100;card.x=Math.random()*innerWidth;}});timer+=16;t+=16;if(timer>3500){idx=(idx+1)%seq.length;timer=0;tag.innerText=seq[idx].label;tag.style.background=seq[idx].color;updateLandingRealIcon(idx);}requestAnimationFrame(loop);})();updateLandingRealIcon(0);
+let clicks=0,clickTimer=null;
+document.getElementById('brandSecret').addEventListener('click',()=>{
+  clicks++;
+  clearTimeout(clickTimer);
+  clickTimer=setTimeout(()=>{clicks=0;},1500);
+  if(clicks===5){
+    clicks=0;
+    clearTimeout(clickTimer);
+    let lock=_isLocked();
+    if(lock.locked){alert('Locked for '+lock.remain+'s'); return;}
+    document.getElementById('loginBox').classList.add('show');
+    let star=document.getElementById('loginStar');
+    star.classList.add('showStar');
+    setTimeout(()=>star.classList.remove('showStar'),3000);
+  }
+});
+let _currentGalName='';
+window._oG=function(name){
+  _currentGalName=name;
+  document.getElementById('galTitle').innerText=name;
+  let filtered=designs.filter(d=>d.cat===name);
+  document.getElementById('gallery').innerHTML=filtered.length?filtered.map(d=>`<div class="item"><img src="${d.img}"><div class="item-info"><b>${escapeHTML(d.title)}</b><span>₹${escapeHTML(String(d.price))}</span></div></div>`).join(''):`<p>No designs in ${escapeHTML(name)}</p>`;
+  document.getElementById('galModal').classList.add('show');
+  // show delete btn only in admin mode
+  let delBtn=document.getElementById('galDelBtn');
+  if(document.body.classList.contains('admin-mode')){
+    delBtn.style.display='inline-flex';
+    delBtn.classList.add('admin-mode');
+  } else {
+    delBtn.style.display='none';
+  }
+};
+window._cG=function(){document.getElementById('galModal').classList.remove('show');};
+window._aS=function(){
+  document.getElementById('upBox').classList.remove('show');
+  document.getElementById('secName').value='';
+  document.getElementById('secEmoji').value='';
+  document.getElementById('secDesc').value='';
+  window._sE();
+  document.getElementById('secBox').classList.add('show');
+};
+window._sS=async function(){
+  let name=document.getElementById('secName').value.trim();
+  if(!name){alert('Enter section name');return;}
+  if(categories.some(c=>c.name.toLowerCase()===name.toLowerCase())){alert('Section already exists');return;}
+  let info=getEmojiForName(name);
+  let emoji=document.getElementById('secEmoji').value.trim() || info.emoji;
+  let desc=document.getElementById('secDesc').value.trim() || 'Premium '+name;
+  let color=document.getElementById('secColor').value || '#6d28d9';
+  let light=color+'22';
+  let newCat={name:name,icon:emoji,desc:desc,hoverCol:color,light:light};
+  if(name.toLowerCase().includes('flyer')){
+    newCat.customIcon=CUSTOM_FLYER_ICON;
+  } else {
+    let autoIcon=createAutoIcon(name, color, emoji);
+    if(autoIcon) newCat.customIcon=autoIcon;
+  }
+  categories.push(newCat);
+  await save();
+  renderCats();
+  document.getElementById('secBox').classList.remove('show');
+  document.getElementById('upBox').classList.add('show');
+};
+window._sW=async function(){alert('Edit work - coming soon, keeping same as your original');document.getElementById('editWorkBox').classList.remove('show');};
+window._dL=async function(){let lock=_isLocked();if(lock.locked){alert('Too many tries. Wait '+lock.remain+'s');return;}let entered=document.getElementById('passIn').value.trim();if(!_0xCACHE_HASH){_0xCACHE_HASH=await _0xhash("71234");}let h=await _0xhash(entered);if(h===_0xCACHE_HASH){_markAsOwnerDevice();sessionStorage.setItem(_0xTOKEN_KEY,await _0xhash(Date.now().toString()));document.getElementById('loginBox').classList.remove('show');document.getElementById('upBox').classList.add('show');document.body.classList.add('admin-mode');document.getElementById('passIn').value='';renderCats();}else{_addFail();alert('Wrong password');}};
+window._pB=async function(){let f=document.getElementById('fileIn').files[0];if(!f){alert('Select image');return;}let title=document.getElementById('titleIn').value.trim()||'Premium Design';let cat=document.getElementById('catIn').value;let price=document.getElementById('priceIn').value.trim()||'99';let r=new FileReader();r.onload=function(e){let img=new Image();img.onload=async function(){let canvas=document.createElement('canvas');let maxW=900;let s=Math.min(1,maxW/img.width);canvas.width=img.width*s;canvas.height=img.height*s;canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);let comp=canvas.toDataURL('image/jpeg',0.75);designs.push({id:'id_'+Date.now(),title,cat,price,img:comp});await save();renderCats();document.getElementById('fileIn').value='';document.getElementById('titleIn').value='';document.getElementById('priceIn').value='';alert('Published!');};img.src=e.target.result;};r.readAsDataURL(f);};
+window._bA=function(){document.getElementById('upBox').classList.remove('show');};
+window._bS=function(){document.getElementById('secBox').classList.remove('show');document.getElementById('upBox').classList.add('show');};
+window._dSec=async function(i){
+  if(!document.body.classList.contains('admin-mode')){alert('Login first');return;}
+  let catName=categories[i]?.name||'this section';
+  let count=designs.filter(d=>d.cat===catName).length;
+  let msg=count>0?`Delete "${catName}"? It has ${count} designs. Those designs will also be removed.`:`Delete "${catName}"?`;
+  if(!confirm(msg)) return;
+  designs=designs.filter(d=>d.cat!==catName);
+  categories.splice(i,1);
+  await save();
+  renderCats();
+  window._cG();
+};
+window._dSecByName=async function(){
+  if(!_currentGalName) return;
+  let idx=categories.findIndex(c=>c.name===_currentGalName);
+  if(idx>=0) window._dSec(idx);
+};
+window._lO=function(){document.body.classList.remove('admin-mode');sessionStorage.removeItem(_0xTOKEN_KEY);document.getElementById('upBox').classList.remove('show');document.getElementById('loginBox').classList.remove('show');document.getElementById('secBox').classList.remove('show');document.getElementById('galModal').classList.remove('show');};
+</script>
+</body>
+</html>
