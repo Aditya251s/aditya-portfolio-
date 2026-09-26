@@ -74,10 +74,10 @@ footer{position:relative;z-index:2;margin-top:40px;padding:60px 4% 30px;backgrou
 <section class="hero">
 <div>
 <h1>Designs That<br><span>Convert,</span><br>Not Just Look Good.</h1>
-<p>Premium designs that help your business grow faster. Starting from just ₹99.</p>
+<p>Premium designs that help your business grow faster. Available at an affordable price.</p>
 <div style="display:flex;gap:10px;flex-wrap:wrap">
 <button class="btn btn-dark" onclick="document.getElementById('work').scrollIntoView({behavior:'smooth'})">View Work →</button>
-<button class="btn btn-light">Starts ₹99</button>
+<button class="btn btn-light">Affordable Price</button>
 </div>
 </div>
 <div class="motion-card"><div id="motionView" class="view" style="background:linear-gradient(135deg,#ede9fe,#ddd6fe);color:#6d28d9"></div></div>
@@ -228,7 +228,76 @@ function openDB(){return new Promise((res,rej)=>{let r=indexedDB.open(DB_NAME,1)
 async function loadDesigns(){try{let db=await openDB();let data=await new Promise((resolve)=>{let tx=db.transaction(STORE_NAME,"readonly");let store=tx.objectStore(STORE_NAME);let req=store.getAll();req.onsuccess=()=>resolve(req.result||[]);req.onerror=()=>resolve([]);});return data;}catch(e){return [];}}
 async function saveAllToDB(all){let db=await openDB();return new Promise((resolve,reject)=>{let tx=db.transaction(STORE_NAME,"readwrite");let store=tx.objectStore(STORE_NAME);store.clear();tx.oncomplete=()=>{let tx2=db.transaction(STORE_NAME,"readwrite");let store2=tx2.objectStore(STORE_NAME);all.forEach(d=>store2.put(d));tx2.oncomplete=()=>resolve(true);tx2.onerror=()=>reject(false);};tx.onerror=()=>reject(false);});}
 async function save(){try{localStorage.setItem(STORAGE_KEY_CATS,JSON.stringify(categories));localStorage.setItem(STORAGE_KEY_INTR,JSON.stringify(intruders));await saveAllToDB(designs);return true;}catch(e){return false;}}
-;(async()=>{designs=await loadDesigns();renderCats();})();
+;(async()=>{
+  // Generate realistic custom icons dynamically for specific categories
+  try{
+    // 1. Flyer Icon
+    let c1=document.createElement('canvas');c1.width=160;c1.height=160;let x1=c1.getContext('2d');
+    x1.fillStyle="#e11d48";x1.fillRect(0,0,160,160);
+    x1.fillStyle="#ffffff";x1.beginPath();x1.roundRect(14,14,132,132,24);x1.fill();
+    x1.fillStyle="#ffe4e6";x1.fillRect(36,42,88,88);
+    x1.fillStyle="#f43f5e";x1.fillRect(44,32,88,88);
+    x1.fillStyle="#ffffff";x1.fillRect(52,24,88,88);
+    x1.fillStyle="#e11d48";x1.fillRect(66,42,60,6);x1.fillRect(66,56,44,4);x1.fillRect(66,66,52,4);
+    x1.font='800 12px Syne, sans-serif';x1.textAlign='center';x1.fillText("FLYERS",96,124);
+    let flyerBase64 = c1.toDataURL('image/png');
+    let fCat = categories.find(cat => cat.name.toLowerCase() === "flyers");
+    if(fCat) fCat.customIcon = flyerBase64;
+
+    // 2. YouTube Thumbnails Icon (Red Play button badge with video frame lines)
+    let c2=document.createElement('canvas');c2.width=160;c2.height=160;let x2=c2.getContext('2d');
+    x2.fillStyle="#f59e0b";x2.fillRect(0,0,160,160);
+    x2.fillStyle="#ffffff";x2.beginPath();x2.roundRect(14,14,132,132,24);x2.fill();
+    // Screen container
+    x2.fillStyle="#fee2e2";x2.beginPath();x2.roundRect(30,35,100,68,12);x2.fill();
+    // Play button center red box
+    x2.fillStyle="#ef4444";x2.beginPath();x2.roundRect(62,53,36,32,8);x2.fill();
+    // Play triangle
+    x2.fillStyle="#ffffff";x2.beginPath();x2.moveTo(74,61);x2.lineTo(88,69);x2.lineTo(74,77);x2.closePath();x2.fill();
+    x2.fillStyle="#f59e0b";x2.font='800 11px Syne, sans-serif';x2.textAlign='center';x2.fillText("YOUTUBE",80,126);
+    let ytBase64 = c2.toDataURL('image/png');
+    let ytCat = categories.find(cat => cat.name.toLowerCase() === "youtube thumbnails");
+    if(ytCat) ytCat.customIcon = ytBase64;
+
+    // 3. Logos Icon (Modern Office / Business Building Skyline Icon)
+    let c3=document.createElement('canvas');c3.width=160;c3.height=160;let x3=c3.getContext('2d');
+    x3.fillStyle="#7c3aed";x3.fillRect(0,0,160,160);
+    x3.fillStyle="#ffffff";x3.beginPath();x3.roundRect(14,14,132,132,24);x3.fill();
+    // Building towers
+    x3.fillStyle="#ddd6fe";x3.fillRect(44,50,30,62);
+    x3.fillStyle="#7c3aed";x3.fillRect(78,34,38,78);
+    // Windows on buildings
+    x3.fillStyle="#ffffff";
+    x3.fillRect(50,56,6,8);x3.fillRect(62,56,6,8);x3.fillRect(50,70,6,8);x3.fillRect(62,70,6,8);
+    x3.fillRect(86,44,8,10);x3.fillRect(98,44,8,10);x3.fillRect(86,60,8,10);x3.fillRect(98,60,8,10);x3.fillRect(86,76,8,10);x3.fillRect(98,76,8,10);
+    x3.fillStyle="#7c3aed";x3.font='800 11px Syne, sans-serif';x3.textAlign='center';x3.fillText("LOGOS",80,126);
+    let logoBase64 = c3.toDataURL('image/png');
+    let logoCat = categories.find(cat => cat.name.toLowerCase() === "logos");
+    if(logoCat) logoCat.customIcon = logoBase64;
+
+    // 4. Wedding Invitation Cards Icon (Traditional Indian/Royal Wedding Card Icon)
+    let c4=document.createElement('canvas');c4.width=160;c4.height=160;let x4=c4.getContext('2d');
+    x4.fillStyle="#e11d48";x4.fillRect(0,0,160,160);
+    x4.fillStyle="#ffffff";x4.beginPath();x4.roundRect(14,14,132,132,24);x4.fill();
+    // Folded envelope card base
+    x4.fillStyle="#ffe4e6";x4.beginPath();x4.roundRect(38,40,84,72,8);x4.fill();
+    // Card flap lines
+    x4.strokeStyle="#e11d48";x4.lineWidth=3;
+    x4.beginPath();x4.moveTo(38,40);x4.lineTo(80,76);x4.lineTo(122,40);x4.stroke();
+    // Heart/Royal seal stamp in center
+    x4.fillStyle="#e11d48";
+    x4.beginPath();x4.arc(80,68,12,0,Math.PI*2);x4.fill();
+    x4.fillStyle="#ffffff";x4.font='bold 10px sans-serif';x4.textAlign='center';x4.textBaseline='middle';x4.fillText("♥",80,68);
+    x4.font='800 10px Syne, sans-serif';x4.fillStyle="#e11d48";x4.textBaseline='alphabetic';x4.fillText("WEDDING",80,126);
+    let weddingBase64 = c4.toDataURL('image/png');
+    let weddingCat = categories.find(cat => cat.name.toLowerCase() === "wedding invitation cards");
+    if(weddingCat) weddingCat.customIcon = weddingBase64;
+
+  }catch(e){}
+
+  designs=await loadDesigns();renderCats();
+})();
+
 function renderCats(){
   document.getElementById('catGrid').innerHTML=categories.map((c,i)=>{
     let iconHTML;
@@ -247,10 +316,10 @@ function renderCats(){
 function getRealIconHTML(type, color){
   type=type.toLowerCase();
   if(type.includes('flyer')){
-    return `<div style="display:flex;flex-direction:column;align-items:center;gap:5px"><div style="width:60px;height:70px;background:#fff;border-radius:8px;box-shadow:0 6px 15px rgba(0,0,0,0.12);padding:4px"><img src="${CUSTOM_FLYER_ICON}" style="width:100%;height:100%;object-fit:contain;" onerror="this.replaceWith(document.createTextNode('📑'))"></div><div style="font-size:8px;font-weight:800">FLYER DESIGN</div></div>`;
+    return `<div style="display:flex;flex-direction:column;align-items:center;gap:3px"><div style="width:55px;height:65px;background:#fff;border-radius:6px;box-shadow:0 4px 12px rgba(0,0,0,0.15);padding:3px;display:flex;flex-direction:column;gap:2px"><div style="height:10px;background:#e11d48;border-radius:2px"></div><div style="height:3px;background:#fecdd3;width:80%"></div><div style="height:3px;background:#fecdd3;width:60%"></div></div><div style="font-size:8px;font-weight:800">FLYERS</div></div>`;
   }
   if(type.includes('business')) return `<div style="width:70px;height:48px;background:#fff;border-radius:8px;display:flex;flex-direction:column;padding:6px;gap:3px;font-size:8px;font-weight:800;box-shadow:0 4px 10px rgba(0,0,0,.1)"><span style="height:4px;background:${color};border-radius:10px"></span>BUSINESS CARD</div>`;
-  if(type.includes('logo')) return `<div style="width:44px;height:44px;background:#fff;border:2px solid ${color};border-radius:12px;display:grid;place-items:center">🎨</div>`;
+  if(type.includes('logo')) return `<div style="width:44px;height:44px;background:#fff;border:2px solid ${color};border-radius:12px;display:grid;place-items:center">🏢</div>`;
   return `<div>${type.toUpperCase().slice(0,12)}</div>`;
 }
 const cv=document.getElementById('motion'),cx=cv.getContext('2d'),tag=document.getElementById('motionTag');
@@ -258,7 +327,7 @@ function rs(){cv.width=innerWidth;cv.height=innerHeight}rs();addEventListener('r
 let fallingCards=[];const colors=["#4c1d95","#7c2d12","#065f46","#1e3a8a"];const cardTexts=["ADITYA DESIGNER","PREMIUM CARD","YOUR LOGO"];
 function initCards(){fallingCards=[];for(let i=0;i<18;i++){fallingCards.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,w:130,h:80,speed:0.5+Math.random(),rot:Math.random()*360,rotSpeed:(Math.random()-0.5),color:colors[i%colors.length],text:cardTexts[i%3],opacity:0.4,depth:8});}}
 initCards();
-const seq=[{label:"💼 BUSINESS CARD",color:"#6d28d9",bg:"linear-gradient(135deg,#ede9fe,#ddd6fe)"},{label:"🎨 LOGO DESIGN",color:"#ff2e63",bg:"linear-gradient(135deg,#ffe4e6,#fecdd3)"},{label:"📑 FLYER DESIGN",color:"#e11d48",bg:"linear-gradient(135deg,#ffe4e6,#fecdd3)"},{label:"📄 PAMPLET DESIGN",color:"#2563eb",bg:"linear-gradient(135deg,#dbeafe,#bfdbfe)"}];
+const seq=[{label:"💼 BUSINESS CARD",color:"#6d28d9",bg:"linear-gradient(135deg,#ede9fe,#ddd6fe)"},{label:"🏢 LOGO DESIGN",color:"#7c3aed",bg:"linear-gradient(135deg,#fce7f3,#ddd6fe)"},{label:"📑 FLYER DESIGN",color:"#e11d48",bg:"linear-gradient(135deg,#ffe4e6,#fecdd3)"},{label:"📄 PAMPLET DESIGN",color:"#2563eb",bg:"linear-gradient(135deg,#dbeafe,#bfdbfe)"}];
 let idx=0,timer=0,t=0;
 function updateLandingRealIcon(i){let s=seq[i];document.getElementById('motionView').style.background=s.bg;document.getElementById('motionView').innerHTML=getRealIconHTML(s.label,s.color);}
 (function loop(){cx.clearRect(0,0,cv.width,cv.height);fallingCards.forEach(card=>{cx.save();cx.translate(card.x,card.y);cx.rotate(card.rot*Math.PI/180);cx.globalAlpha=card.opacity;cx.fillStyle=card.color;cx.fillRect(-card.w/2,-card.h/2,card.w,card.h);cx.fillStyle="#fff";cx.font="bold 8px sans-serif";cx.fillText(card.text,-card.w/2+8,-card.h/2+14);cx.restore();card.y+=card.speed;card.rot+=card.rotSpeed;if(card.y>innerHeight+100){card.y=-100;card.x=Math.random()*innerWidth;}});timer+=16;t+=16;if(timer>3500){idx=(idx+1)%seq.length;timer=0;tag.innerText=seq[idx].label;tag.style.background=seq[idx].color;updateLandingRealIcon(idx);}requestAnimationFrame(loop);})();updateLandingRealIcon(0);
