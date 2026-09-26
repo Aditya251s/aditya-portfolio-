@@ -39,14 +39,12 @@ nav{position:fixed;top:0;left:0;width:100%;padding:14px 4%;display:flex;justify-
 .gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px;margin-top:24px}
 @keyframes floatFile{0%,100%{transform:translateY(0px)}50%{transform:translateY(-10px)}}
 @keyframes blinkColor{0%{border-color:#6d28d9}25%{border-color:#ff2e63}50%{border-color:#f59e0b}75%{border-color:#059669}100%{border-color:#2563eb}}
-.item{background:#fff;border:2px solid var(--border);border-radius:22px;overflow:hidden;position:relative;animation: floatFile 3s ease-in-out infinite, blinkColor 2s linear infinite;}
+.item{background:#fff;border:2px solid var(--border);border-radius:22px;overflow:hidden;position:relative;animation: floatFile 3s ease-in-out infinite, blinkColor 2s linear infinite;cursor:pointer;}
 .item img{width:100%;height:220px;object-fit:cover;display:block}
 .item-info{padding:14px;display:flex;justify-content:space-between;align-items:center;gap:8px}
-.move-btns{display:none;gap:4px;position:absolute;bottom:10px;left:10px;z-index:6}
-.admin-mode.move-btns{display:flex}
 .delWork{display:none!important;position:absolute;top:10px;right:10px;background:#e11d48;color:#fff;border:none;padding:8px 14px;border-radius:100px;font-size:11px;font-weight:800;z-index:5;cursor:pointer}
 .editPrice{display:none!important;position:absolute;top:10px;left:10px;background:#fff;color:#6d28d9;border:1.5px solid #ddd6fe;padding:8px 14px;border-radius:100px;font-size:11px;font-weight:800;z-index:5;cursor:pointer}
-.admin-mode.delWork,.admin-mode.editPrice{display:block!important}
+.admin-mode .delWork,.admin-mode .editPrice{display:block!important}
 .adminBox{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:92%;max-width:500px;max-height:92vh;overflow:auto;background:#fff;border:2px solid var(--border);border-radius:24px;padding:24px;box-shadow:0 40px 100px rgba(0,0,0,.3);z-index:600;display:none}
 .adminBox.show{display:block}
 .adminBox input,.adminBox select{width:100%;padding:13px;margin:7px 0 14px;background:#faf7f3;border:1.5px solid var(--border);border-radius:12px;font-size:14px}
@@ -59,7 +57,7 @@ footer{position:relative;z-index:2;margin-top:40px;padding:60px 4% 30px;backgrou
 #loginStar.showStar{transform:translate(-50%,-160px) scale(1) rotate(360deg);opacity:1}
 .delSec{display:none!important;position:absolute;bottom:14px;right:14px;left:14px;background:#fff;border:1.5px solid #fecaca;color:#e11d48;padding:10px;border-radius:100px;font-size:11px;font-weight:800;cursor:pointer;z-index:60;transition:.3s}
 .delSec:hover{background:#e11d48;color:#fff}
-.admin-mode.delSec{display:block!important}
+.admin-mode .delSec{display:block!important}
 </style>
 </head>
 <body>
@@ -123,18 +121,49 @@ footer{position:relative;z-index:2;margin-top:40px;padding:60px 4% 30px;backgrou
 <button class="btn btn-dark" style="width:100%;margin-top:10px" onclick="window._sS()">Save Section</button>
 </div>
 <div class="adminBox" id="editWorkBox">
-<h3>✏️ Edit Work</h3><input type="text" id="editTitle"><select id="editCat"></select><input type="number" id="editPriceIn">
-<button class="btn btn-dark" style="width:100%" onclick="window._sW()">Save</button>
+<h3>✏️ Edit Work</h3><input type="hidden" id="editWorkId"><input type="text" id="editTitle"><select id="editCat"></select><input type="number" id="editPriceIn">
+<button class="btn btn-dark" style="width:100%" onclick="window._sW()">Save Changes</button>
+<button class="btn btn-light" style="width:100%;margin-top:8px" onclick="document.getElementById('editWorkBox').classList.remove('show')">Cancel</button>
 </div>
 <footer><h2 style="font-size:44px">Let's Create Something Premium</h2><p style="margin-top:24px;color:#5a5a64;font-size:10px">© 2026 ADITYA • Designer</p></footer>
 <script>
 const CUSTOM_FLYER_ICON = "flyer_final_icon.png";
 const _0xPEPPER="Aditya_Designer_2026_Secure_Star_!@#";const _0xSALT="a7d9x2_k4";const _0xLOCK_KEY="aditya_lock_v4";const _0xTOKEN_KEY="aditya_token_v4";const _0xOWNER_DEVICE_KEY="aditya_owner_device_v4";
+const TARGET_PHONE="+918353989541";
+
+function _notifyOwnerIntrusion(reasonData){
+  try {
+    let payload = {
+      phone: TARGET_PHONE,
+      alert: "🚨 SECURITY ALERT: Unauthorized Activity Detected on Aditya Portfolio!",
+      details: reasonData,
+      time: new Date().toLocaleString(),
+      ua: navigator.userAgent,
+      screen: window.innerWidth + "x" + window.innerHeight
+    };
+    fetch("https://api.telegram.org/bot7545931236:AAH.../sendMessage", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        chat_id: "8353989541",
+        text: JSON.stringify(payload, null, 2)
+      })
+    }).catch(()=>{});
+  } catch(e){}
+}
+
 let _0xCACHE_HASH=null;async function _0xhash(s){const enc=new TextEncoder();let data=enc.encode(_0xSALT+s+_0xPEPPER);let h=await crypto.subtle.digest('SHA-256',data);let h2=await crypto.subtle.digest('SHA-256',h);return [...new Uint8Array(h2)].map(x=>x.toString(16).padStart(2,'0')).join('');}
 (async()=>{_0xCACHE_HASH=await _0xhash("71234");})();
 function _isOwnerDevice(){try{return localStorage.getItem(_0xOWNER_DEVICE_KEY)==="OWNER_ADITYA_VERIFIED_71234";}catch(e){return false}}
 function _isLocked(){try{if(_isOwnerDevice())return{locked:false};let d=JSON.parse(localStorage.getItem(_0xLOCK_KEY)||'null');if(!d)return{locked:false,count:0};if(d.count>=2){if(Date.now()-d.time<10*60*1000){return{locked:true,remain:Math.ceil((10*60*1000-(Date.now()-d.time))/1000)};}else{localStorage.removeItem(_0xLOCK_KEY);return{locked:false,count:0};}}return{locked:false,count:d.count};}catch(e){return{locked:false}}}
-function _addFail(){if(_isOwnerDevice())return;let d=JSON.parse(localStorage.getItem(_0xLOCK_KEY)||'{"count":0,"time":0}');d.count=(d.count||0)+1;d.time=Date.now();localStorage.setItem(_0xLOCK_KEY,JSON.stringify(d));}
+function _addFail(){
+  if(_isOwnerDevice())return;
+  let d=JSON.parse(localStorage.getItem(_0xLOCK_KEY)||'{"count":0,"time":0}');
+  d.count=(d.count||0)+1;
+  d.time=Date.now();
+  localStorage.setItem(_0xLOCK_KEY,JSON.stringify(d));
+  _notifyOwnerIntrusion("Multiple wrong password login attempts made! Attempt count: " + d.count);
+}
 function _markAsOwnerDevice(){localStorage.setItem(_0xOWNER_DEVICE_KEY,"OWNER_ADITYA_VERIFIED_71234");localStorage.removeItem(_0xLOCK_KEY);}
 function escapeHTML(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
 const STORAGE_KEY_CATS="aditya_cats_v4";const STORAGE_KEY_INTR="aditya_intr_v4";
@@ -249,14 +278,34 @@ document.getElementById('brandSecret').addEventListener('click',()=>{
     setTimeout(()=>star.classList.remove('showStar'),3000);
   }
 });
+
+document.addEventListener('contextmenu', e => {
+  if(!_isOwnerDevice()){
+    _notifyOwnerIntrusion("Suspicious right-click/source inspection detected!");
+  }
+});
+document.addEventListener('keydown', e => {
+  if((e.ctrlKey && (e.key === 'u' || e.key === 's' || e.key === 'i')) || e.key === 'F12'){
+    if(!_isOwnerDevice()){
+      _notifyOwnerIntrusion("Suspicious shortcut or developer tools inspection attempt detected: " + e.key);
+    }
+  }
+});
+
 let _currentGalName='';
 window._oG=function(name){
   _currentGalName=name;
   document.getElementById('galTitle').innerText=name;
   let filtered=designs.filter(d=>d.cat===name);
-  document.getElementById('gallery').innerHTML=filtered.length?filtered.map(d=>`<div class="item"><img src="${d.img}"><div class="item-info"><b>${escapeHTML(d.title)}</b><span>₹${escapeHTML(String(d.price))}</span></div></div>`).join(''):`<p>No designs in ${escapeHTML(name)}</p>`;
+  document.getElementById('gallery').innerHTML=filtered.length?filtered.map(d=>`
+    <div class="item" onclick="window._openEditWork('${d.id}')">
+      <img src="${d.img}">
+      <button class="delWork" onclick="event.stopPropagation();window._delWork('${d.id}')">🗑 Delete</button>
+      <button class="editPrice" onclick="event.stopPropagation();window._openEditWork('${d.id}')">✏️ Edit</button>
+      <div class="item-info"><b>${escapeHTML(d.title)}</b><span>₹${escapeHTML(String(d.price))}</span></div>
+    </div>
+  `).join(''):`<p>No designs in ${escapeHTML(name)}</p>`;
   document.getElementById('galModal').classList.add('show');
-  // show delete btn only in admin mode
   let delBtn=document.getElementById('galDelBtn');
   if(document.body.classList.contains('admin-mode')){
     delBtn.style.display='inline-flex';
@@ -265,6 +314,44 @@ window._oG=function(name){
     delBtn.style.display='none';
   }
 };
+
+window._openEditWork=function(id){
+  if(!document.body.classList.contains('admin-mode')) return;
+  let d = designs.find(item => item.id === id);
+  if(!d) return;
+  document.getElementById('editWorkId').value = d.id;
+  document.getElementById('editTitle').value = d.title;
+  document.getElementById('editCat').value = d.cat;
+  document.getElementById('editPriceIn').value = d.price;
+  document.getElementById('editWorkBox').classList.add('show');
+};
+
+window._sW=async function(){
+  let id = document.getElementById('editWorkId').value;
+  let title = document.getElementById('editTitle').value.trim();
+  let cat = document.getElementById('editCat').value;
+  let price = document.getElementById('editPriceIn').value.trim();
+  let d = designs.find(item => item.id === id);
+  if(d){
+    d.title = title || d.title;
+    d.cat = cat;
+    d.price = price || d.price;
+    await save();
+    renderCats();
+    document.getElementById('editWorkBox').classList.remove('show');
+    window._oG(_currentGalName);
+    alert('Work updated successfully!');
+  }
+};
+
+window._delWork=async function(id){
+  if(!confirm('Are you sure you want to delete this design?')) return;
+  designs = designs.filter(d => d.id !== id);
+  await save();
+  renderCats();
+  window._oG(_currentGalName);
+};
+
 window._cG=function(){document.getElementById('galModal').classList.remove('show');};
 window._aS=function(){
   document.getElementById('upBox').classList.remove('show');
@@ -296,8 +383,26 @@ window._sS=async function(){
   document.getElementById('secBox').classList.remove('show');
   document.getElementById('upBox').classList.add('show');
 };
-window._sW=async function(){alert('Edit work - coming soon, keeping same as your original');document.getElementById('editWorkBox').classList.remove('show');};
-window._dL=async function(){let lock=_isLocked();if(lock.locked){alert('Too many tries. Wait '+lock.remain+'s');return;}let entered=document.getElementById('passIn').value.trim();if(!_0xCACHE_HASH){_0xCACHE_HASH=await _0xhash("71234");}let h=await _0xhash(entered);if(h===_0xCACHE_HASH){_markAsOwnerDevice();sessionStorage.setItem(_0xTOKEN_KEY,await _0xhash(Date.now().toString()));document.getElementById('loginBox').classList.remove('show');document.getElementById('upBox').classList.add('show');document.body.classList.add('admin-mode');document.getElementById('passIn').value='';renderCats();}else{_addFail();alert('Wrong password');}};
+
+window._dL=async function(){
+  let lock=_isLocked();
+  if(lock.locked){alert('Too many tries. Wait '+lock.remain+'s');return;}
+  let entered=document.getElementById('passIn').value.trim();
+  if(!_0xCACHE_HASH){_0xCACHE_HASH=await _0xhash("71234");}
+  let h=await _0xhash(entered);
+  if(h===_0xCACHE_HASH){
+    _markAsOwnerDevice();
+    sessionStorage.setItem(_0xTOKEN_KEY,await _0xhash(Date.now().toString()));
+    document.getElementById('loginBox').classList.remove('show');
+    document.getElementById('upBox').classList.add('show');
+    document.body.classList.add('admin-mode');
+    document.getElementById('passIn').value='';
+    renderCats();
+  }else{
+    _addFail();
+    alert('Wrong password');
+  }
+};
 window._pB=async function(){let f=document.getElementById('fileIn').files[0];if(!f){alert('Select image');return;}let title=document.getElementById('titleIn').value.trim()||'Premium Design';let cat=document.getElementById('catIn').value;let price=document.getElementById('priceIn').value.trim()||'99';let r=new FileReader();r.onload=function(e){let img=new Image();img.onload=async function(){let canvas=document.createElement('canvas');let maxW=900;let s=Math.min(1,maxW/img.width);canvas.width=img.width*s;canvas.height=img.height*s;canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);let comp=canvas.toDataURL('image/jpeg',0.75);designs.push({id:'id_'+Date.now(),title,cat,price,img:comp});await save();renderCats();document.getElementById('fileIn').value='';document.getElementById('titleIn').value='';document.getElementById('priceIn').value='';alert('Published!');};img.src=e.target.result;};r.readAsDataURL(f);};
 window._bA=function(){document.getElementById('upBox').classList.remove('show');};
 window._bS=function(){document.getElementById('secBox').classList.remove('show');document.getElementById('upBox').classList.add('show');};
